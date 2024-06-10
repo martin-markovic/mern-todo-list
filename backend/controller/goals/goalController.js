@@ -1,7 +1,3 @@
-import { Router } from "express";
-
-const router = Router();
-
 // Sample data for demo
 let goals = [
   { id: 1, title: "Goal 1", completed: false },
@@ -9,7 +5,7 @@ let goals = [
 ];
 
 // POST create a new goal
-router.post("/", (req, res) => {
+export const addGoal = (req, res) => {
   const { title, completed } = req.body;
 
   if (!title) {
@@ -24,41 +20,55 @@ router.post("/", (req, res) => {
 
   goals.push(newGoal);
   res.status(201).json(newGoal);
-});
+};
 
 // GET all goals
-router.get("/", (req, res) => {
+export const getGoals = (req, res) => {
   res.json(goals);
-});
+};
 
 // GET goal by id
-router.get("/:id", (req, res) => {
+export const getGoalById = (req, res) => {
   const goalId = parseInt(req.params.id);
-  const singleGoal = goals.find((goal) => goal.id === goalId);
 
-  if (!singleGoal) {
-    return res.status(404);
+  if (goalId > goals.length) {
+    return res.sendStatus(404);
+  } else {
+    const singleGoal = goals.find((goal) => goal.id === goalId);
+
+    res.json(singleGoal);
   }
-
-  res.json(singleGoal);
-});
+};
 
 // PUT update a goal by id
-router.put("/:id", (req, res) => {
-  const { id } = req.params;
-  console.log(`PUT /api/goals/${id}`);
+export const updateGoal = (req, res) => {
+  const goalId = parseInt(req.params.id);
+  const goalIndex = goals.findIndex((goal) => goal.id === goalId);
 
-  res.status(200);
-  res.send(`Update a goal with id of${id}`);
-});
+  if (goalIndex < 0) {
+    return res.status(404).json({ message: "Goal not found" });
+  }
+
+  const { title, completed } = req.body;
+
+  if (!title) {
+    return res.status(400).json({ message: "Please add title" });
+  }
+
+  goals[goalIndex] = {
+    ...goals[goalIndex],
+    title,
+    completed: completed || false,
+  };
+
+  res.json(goals[goalIndex]);
+};
 
 // DELETE goal by id
-router.delete("/:id", (req, res) => {
-  const { id } = req.params;
-  console.log(`DELETE /api/goals/${id}`);
+export const deleteGoal = (req, res) => {
+  const goalId = parseInt(req.params.id);
+  console.log(goalId);
 
-  res.status(200);
-  res.send(`Delete a goal with id of ${id}`);
-});
-
-export default router;
+  goals = goals.filter((goal) => goal.id !== goalId);
+  res.sendStatus(204);
+};

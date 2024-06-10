@@ -1,5 +1,8 @@
-import router from "../controller/goals/goalController.js";
+import { Router } from "express";
+const router = Router();
 
-router.use("/api/goals", router);
+import goalRouter from "./goals/goalRoutes.js";
+
+router.use("/api/goals", goalRouter);
 
 export default router;
