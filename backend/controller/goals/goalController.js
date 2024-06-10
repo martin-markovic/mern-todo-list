@@ -2,20 +2,17 @@ import Goal from "../../models/goalModel.js";
 
 // POST create a new goal
 export const addGoal = async (req, res) => {
-  const { title, completed } = req.body;
+  const { title } = req.body;
 
   try {
     if (!title) {
       return res.status(404).json({ message: "Please add a title" });
     }
 
-    const newGoal = {
-      id: goals.length + 1,
-      title,
-      completed: completed || false,
-    };
+    const newGoal = await Goal.create({
+      text: req.body.text,
+    });
 
-    goals.push(newGoal);
     res.status(201).json(newGoal);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -36,15 +33,13 @@ export const getGoals = async (req, res) => {
 // GET goal by id
 export const getGoalById = async (req, res) => {
   try {
-    const goalId = parseInt(req.params.id);
+    const goal = await Goal.findById(req.params.id);
 
-    if (goalId > goals.length) {
-      return res.sendStatus(404);
-    } else {
-      const singleGoal = goals.find((goal) => goal.id === goalId);
-
-      res.json(singleGoal);
+    if (!goal) {
+      res.status(404).json({ message: "Goal not found" });
     }
+
+    res.status(200).json(goal);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -53,26 +48,17 @@ export const getGoalById = async (req, res) => {
 // PUT update a goal by id
 export const updateGoal = async (req, res) => {
   try {
-    const goalId = parseInt(req.params.id);
-    const goalIndex = goals.findIndex((goal) => goal.id === goalId);
+    const goalToUpdate = await Goal.findById(req.params.id);
 
-    if (goalIndex < 0) {
+    if (!goalToUpdate) {
       return res.status(404).json({ message: "Goal not found" });
     }
 
-    const { title, completed } = req.body;
+    const updatedGoal = await Goal.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+    });
 
-    if (!title) {
-      return res.status(400).json({ message: "Please add title" });
-    }
-
-    goals[goalIndex] = {
-      ...goals[goalIndex],
-      title,
-      completed: completed || false,
-    };
-
-    res.json(goals[goalIndex]);
+    res.status(200).json(updatedGoal);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -81,11 +67,17 @@ export const updateGoal = async (req, res) => {
 // DELETE goal by id
 export const deleteGoal = async (req, res) => {
   try {
-    const goalId = parseInt(req.params.id);
-    console.log(goalId);
+    const goalToDelete = await Goal.findById(req.params.id);
 
-    goals = goals.filter((goal) => goal.id !== goalId);
-    res.sendStatus(204);
+    console.log(goalToDelete);
+
+    if (!goalToDelete) {
+      res.status(400).json({ message: "Goal not found" });
+    }
+
+    await Goal.deleteOne(goalToDelete);
+
+    res.status(200).json({ id: req.params.id });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
