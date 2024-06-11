@@ -15,8 +15,10 @@ const userSchema = mongoose.Schema(
       required: [true, "Please fill out a password field"],
     },
   },
-  timestamps
+  {
+    timestamps: true,
+  }
 );
 
-const User = userSchema;
+const User = mongoose.model("User", userSchema);
 export default User;
