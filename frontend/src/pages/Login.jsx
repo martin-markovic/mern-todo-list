@@ -17,7 +17,7 @@ function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { user, isLoading, isSuccess, isError, message } = useSelector(
+  const { user, isSuccess, isLoading, isError, message } = useSelector(
     (state) => state.auth
   );
 
@@ -26,10 +26,9 @@ function Login() {
       toast.error(message);
     } else if (isSuccess) {
       navigate("/");
+      dispatch(reset());
     }
-
-    dispatch(reset());
-  }, [user, isLoading, isError, isSuccess, message]);
+  }, [user, isError, isLoading, isSuccess, message, dispatch, navigate]);
 
   const onChange = (e) => {
     setFormData((prevState) => ({
@@ -41,12 +40,16 @@ function Login() {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    const userData = {
-      email,
-      password,
-    };
+    if (!email || !password) {
+      toast.error("Please add all fields");
+    } else {
+      const userData = {
+        email,
+        password,
+      };
 
-    dispatch(login(userData));
+      dispatch(login(userData));
+    }
   };
 
   return (
