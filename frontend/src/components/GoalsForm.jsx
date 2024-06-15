@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
-import createGoal from "../features/goals/goalService";
+import { createGoal } from "../features/goals/goalService";
 import { toast } from "react-toastify";
 
 function GoalsForm() {
