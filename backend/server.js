@@ -7,6 +7,14 @@ connectDB();
 import express from "express";
 const app = express();
 
+import cors from "cors";
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
