@@ -63,13 +63,13 @@ export const goalSlice = createSlice({
         state.isSuccess = false;
         state.message = action.payload;
       })
-      .addCase(getGoals.pending, (state, action) => {
+      .addCase(getGoals.pending, (state) => {
         state.isLoading = true;
       })
       .addCase(getGoals.fulfilled, (state, action) => {
-        state.isError = true;
-        state.isSuccess = false;
-        state.message = action.payload;
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.goals = action.payload;
       })
       .addCase(getGoals.rejected, (state, action) => {
         state.isError = true;
