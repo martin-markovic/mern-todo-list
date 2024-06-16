@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
-import createGoal from "../features/goals/goalService";
+import { createGoal } from "../features/goals/goalSlice.js";
 import { toast } from "react-toastify";
 
 function GoalsForm() {
@@ -28,14 +28,16 @@ function GoalsForm() {
 
     if (!title || !text) {
       toast.error("Please fill all fields");
+    } else {
+      const goalData = {
+        title,
+        text,
+      };
+
+      dispatch(createGoal(goalData));
+
+      setFormData({ title: "", text: "", isComplete: false });
     }
-
-    const formData = {
-      title,
-      text,
-    };
-
-    setFormData({ title: "", text: "", isComplete: false });
   };
 
   return (

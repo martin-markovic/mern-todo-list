@@ -1,5 +1,6 @@
 import { Router } from "express";
 const goalRouter = Router();
+import protect from "../../middleware/authMiddleware.js";
 
 import {
   addGoal,

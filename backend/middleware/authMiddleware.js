@@ -2,18 +2,16 @@ import jwt from "jsonwebtoken";
 import User from "../models/userModel.js";
 
 const protect = async (req, res, next) => {
-  let token;
+  let token = req.header("Authorization")?.split(" ")[1];
 
   if (
     req.headers.authorization &&
     req.headers.authorization.startsWith("Bearer")
   ) {
     try {
-      token = req.headers.authorization.split(" ")[1];
-
       const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
 
-      req.user = await User.findById(decodedToken.id).select("-password");
+      req.user = await User.findById(decodedToken.id);
 
       next();
     } catch (error) {
