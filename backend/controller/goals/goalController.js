@@ -2,15 +2,15 @@ import Goal from "../../models/goalModel.js";
 
 // POST create a new goal
 export const addGoal = async (req, res) => {
-  const { title } = req.body;
-
   try {
-    if (!title) {
-      return res.status(404).json({ message: "Please add a title" });
+    if (!req.body.title || !req.body.text) {
+      return res.status(404).json({ message: "Please add all fields" });
     }
 
     const newGoal = await Goal.create({
+      title: req.body.title,
       text: req.body.text,
+      user: req.user.id,
     });
 
     res.status(201).json(newGoal);
