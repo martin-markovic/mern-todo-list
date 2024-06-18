@@ -54,9 +54,15 @@ export const updateGoal = async (req, res) => {
       return res.status(404).json({ message: "Goal not found" });
     }
 
-    const updatedGoal = await Goal.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    });
+    const updatedGoal = await Goal.findByIdAndUpdate(
+      req.params.id,
+      { $set: req.body },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedGoal) {
+      return res.status(500).json({ message: "Failed to update goal" });
+    }
 
     res.status(200).json(updatedGoal);
   } catch (error) {
@@ -68,8 +74,6 @@ export const updateGoal = async (req, res) => {
 export const deleteGoal = async (req, res) => {
   try {
     const goalToDelete = await Goal.findById(req.params.id);
-
-    console.log(goalToDelete);
 
     if (!goalToDelete) {
       res.status(400).json({ message: "Goal not found" });

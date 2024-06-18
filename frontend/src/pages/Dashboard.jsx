@@ -11,19 +11,19 @@ function Dashboard() {
   const dispatch = useDispatch();
 
   const { user } = useSelector((state) => state.auth);
-  const { goals, isLoading, isError, message } = useSelector(
+  const { goals, isLoading, isError, isEditing, errorMessage } = useSelector(
     (state) => state.goal
   );
 
   useEffect(() => {
     if (isError) {
-      console.log(message);
+      console.log(errorMessage);
     }
 
     if (!user) {
       navigate("/login");
     }
-  }, [user, isError, message, navigate]);
+  }, [user, isError, errorMessage, navigate]);
 
   useEffect(() => {
     if (user) {
@@ -47,17 +47,23 @@ function Dashboard() {
         <h1>Welcome, {user && user.name}</h1>
       </section>
       <GoalsForm />
-      <section>
-        {goals.length >= 0 ? (
-          <div>
-            {goals.map((goal) => {
-              return <GoalItem key={goal._id} goal={goal} />;
-            })}
-          </div>
-        ) : (
-          <h3>You have not set any goals yet</h3>
-        )}
-      </section>
+      {isEditing ? (
+        <></>
+      ) : (
+        <>
+          <section>
+            {goals.length >= 0 ? (
+              <div>
+                {goals.map((goal) => {
+                  return <GoalItem key={goal._id} goal={goal} />;
+                })}
+              </div>
+            ) : (
+              <h3>You have not set any goals yet</h3>
+            )}
+          </section>
+        </>
+      )}
     </>
   );
 }

@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import { createGoal } from "../features/goals/goalSlice.js";
+import { createGoal, updateGoal } from "../features/goals/goalSlice.js";
 import { toast } from "react-toastify";
 
 function GoalsForm() {
@@ -11,8 +11,20 @@ function GoalsForm() {
   });
 
   const dispatch = useDispatch();
+  const { isEditing, formMessage } = useSelector((state) => state.goal);
 
   const { title, text } = formData;
+
+  useEffect(() => {
+    if (isEditing && formMessage) {
+      setFormData((prevState) => ({
+        ...prevState,
+        text: formMessage.text || "",
+      }));
+    } else {
+      setFormData({ title: "", text: "" });
+    }
+  }, [isEditing, formMessage]);
 
   const onChange = (e) => {
     e.preventDefault();
@@ -26,31 +38,40 @@ function GoalsForm() {
   const onSubmit = (e) => {
     e.preventDefault();
 
-    if (!title || !text) {
-      toast.error("Please fill all fields");
+    if (isEditing ? !text : !title || !text) {
+      return toast.error("Please fill all fields");
     } else {
       const goalData = {
         title,
         text,
       };
 
-      dispatch(createGoal(goalData));
+      if (isEditing) {
+        dispatch(updateGoal({ id: formMessage._id, data: goalData }));
+      } else {
+        dispatch(createGoal(goalData));
+      }
 
-      setFormData({ title: "", text: "", isComplete: false });
+      setFormData({ title: "", text: "" });
     }
   };
 
   return (
     <>
       <form onSubmit={onSubmit}>
-        <input
-          type="text"
-          name="title"
-          id="title"
-          placeholder="Add title"
-          value={title}
-          onChange={onChange}
-        ></input>
+        {isEditing ? (
+          <></>
+        ) : (
+          <input
+            type="text"
+            name="title"
+            id="title"
+            placeholder="Add title"
+            value={title}
+            onChange={onChange}
+          ></input>
+        )}
+
         <input
           type="text"
           name="text"
@@ -59,7 +80,7 @@ function GoalsForm() {
           value={text}
           onChange={onChange}
         ></input>
-        <input type="submit" value={"Submit"}></input>
+        <input type="submit" value={isEditing ? "Update" : "Submit"}></input>
       </form>
     </>
   );
