@@ -14,9 +14,9 @@ export const addGoal = async (req, res) => {
       user: req.user.id,
     });
 
-    res.status(201).json(newGoal);
+    return res.status(201).json(newGoal);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: error.message });
   }
 };
 
@@ -24,11 +24,11 @@ export const addGoal = async (req, res) => {
 export const getGoals = async (req, res) => {
   try {
     const userId = req.user._id;
-    const goals = await Goal.find(userId);
+    const goals = await Goal.find({ user: userId });
 
-    res.status(200).json(goals);
+    return res.status(200).json(goals);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: error.message });
   }
 };
 
@@ -53,7 +53,7 @@ export const getGoalById = async (req, res) => {
 
     return res.status(200).json(goal);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: error.message });
   }
 };
 
@@ -66,6 +66,10 @@ export const updateGoal = async (req, res) => {
       return res.status(404).json({ message: "Goal not found" });
     }
 
+    if (!req.user) {
+      return res.status(401).json({ message: "User not found" });
+    }
+
     const updatedGoal = await Goal.findByIdAndUpdate(
       req.params.id,
       { $set: req.body },
@@ -76,9 +80,9 @@ export const updateGoal = async (req, res) => {
       return res.status(500).json({ message: "Failed to update goal" });
     }
 
-    res.status(200).json(updatedGoal);
+    return res.status(200).json(updatedGoal);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: error.message });
   }
 };
 
@@ -88,22 +92,20 @@ export const deleteGoal = async (req, res) => {
     const goalToDelete = await Goal.findById(req.params.id);
 
     if (!goalToDelete) {
-      res.status(400).json({ message: "Goal not found" });
+      return res.status(400).json({ message: "Goal not found" });
     }
 
-    const user = await User.findById(req.params.id);
-
-    if (!user) {
+    if (!req.user) {
       return res.json({ message: "User not found" });
     }
 
-    if (goal.user.toString() !== user.id) {
-      res.status(401).json({ message: "User not authorized" });
+    if (goalToDelete.user.toString() !== req.user.id) {
+      return res.status(401).json({ message: "User not authorized" });
     }
 
     await Goal.deleteOne(goalToDelete);
 
-    res.status(200).json({ id: req.params.id });
+    return res.status(200).json({ id: req.params.id });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
