@@ -22,7 +22,8 @@ export const addGoal = async (req, res) => {
 // GET all goals
 export const getGoals = async (req, res) => {
   try {
-    const goals = await Goal.find();
+    const userId = req.user._id;
+    const goals = await Goal.find({ user: userId });
 
     res.status(200).json(goals);
   } catch (error) {
