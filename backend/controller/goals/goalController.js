@@ -23,7 +23,8 @@ export const addGoal = async (req, res) => {
 // GET all goals
 export const getGoals = async (req, res) => {
   try {
-    const goals = await Goal.find({ user: req.user.id });
+    const userId = req.user._id;
+    const goals = await Goal.find(userId);
 
     res.status(200).json(goals);
   } catch (error) {
@@ -64,7 +65,6 @@ export const updateGoal = async (req, res) => {
     if (!goalToUpdate) {
       return res.status(404).json({ message: "Goal not found" });
     }
-
 
     const updatedGoal = await Goal.findByIdAndUpdate(
       req.params.id,
