@@ -1,4 +1,5 @@
 import Goal from "../../models/goalModel.js";
+import User from "../../models/userModel.js";
 
 // POST create a new goal
 export const addGoal = async (req, res) => {
@@ -23,7 +24,7 @@ export const addGoal = async (req, res) => {
 export const getGoals = async (req, res) => {
   try {
     const userId = req.user._id;
-    const goals = await Goal.find({ user: userId });
+    const goals = await Goal.find(userId);
 
     res.status(200).json(goals);
   } catch (error) {
@@ -37,10 +38,20 @@ export const getGoalById = async (req, res) => {
     const goal = await Goal.findById(req.params.id);
 
     if (!goal) {
-      res.status(404).json({ message: "Goal not found" });
+      return res.status(404).json({ message: "Goal not found" });
     }
 
-    res.status(200).json(goal);
+    const user = await User.findById(req.user.id);
+
+    if (!user) {
+      return res.status(401).json({ message: "User not found" });
+    }
+
+    if (goal.user.toString() !== user.id) {
+      return res.status(401).json({ message: "User not authorized" });
+    }
+
+    return res.status(200).json(goal);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -78,6 +89,16 @@ export const deleteGoal = async (req, res) => {
 
     if (!goalToDelete) {
       res.status(400).json({ message: "Goal not found" });
+    }
+
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+      return res.json({ message: "User not found" });
+    }
+
+    if (goal.user.toString() !== user.id) {
+      res.status(401).json({ message: "User not authorized" });
     }
 
     await Goal.deleteOne(goalToDelete);
