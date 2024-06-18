@@ -1,11 +1,12 @@
-import { FaSignInAlt, FaSignOutAlt, FaUser } from "react-icons/fa";
-import { Link, useNavigate } from "react-router-dom";
+import { FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout, reset } from "../features/auth/authSlice";
 
 function Header() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
   const { user } = useSelector((state) => state.auth);
 
   const onClick = () => {
@@ -16,17 +17,9 @@ function Header() {
 
   return (
     <header>
-      <div>
-        <Link to="/">Goals</Link>
-      </div>
       <ul>
         {user ? (
           <>
-            <li>
-              <Link to="/">
-                <FaSignInAlt /> Goals
-              </Link>
-            </li>
             <li>
               <button onClick={onClick}>
                 <FaSignOutAlt /> Logout
@@ -35,16 +28,19 @@ function Header() {
           </>
         ) : (
           <>
-            <li>
-              <Link to="/register">
-                <FaSignInAlt /> Register
-              </Link>
-            </li>
-            <li>
-              <Link to="/login">
-                <FaSignInAlt /> Login
-              </Link>
-            </li>
+            {location.pathname === "/register" ? (
+              <li>
+                <Link to="/login">
+                  <FaSignInAlt /> Login
+                </Link>
+              </li>
+            ) : (
+              <li>
+                <Link to="/register">
+                  <FaSignInAlt /> Register
+                </Link>
+              </li>
+            )}
           </>
         )}
       </ul>
