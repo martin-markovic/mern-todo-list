@@ -65,19 +65,16 @@ export const updateGoal = async (req, res) => {
       return res.status(404).json({ message: "Goal not found" });
     }
 
-    const user = await User.findById(req.user.id);
 
-    if (!user) {
-      return res.status(401).json({ message: "User not found" });
+    const updatedGoal = await Goal.findByIdAndUpdate(
+      req.params.id,
+      { $set: req.body },
+      { new: true, runValidators: true }
+    );
+
+    if (!updatedGoal) {
+      return res.status(500).json({ message: "Failed to update goal" });
     }
-
-    if (goal.user.toString() !== user.id) {
-      return res.status(401).json({ message: "User not authorized" });
-    }
-
-    const updatedGoal = await Goal.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    });
 
     res.status(200).json(updatedGoal);
   } catch (error) {
