@@ -49,3 +49,8 @@ Prerequisites
     ```
 
 5. Navigate to:  http://localhost:3001 
+
+## Credits
+
+This project is based on [Goalsetter MERN app] (https://github.com/bradtraversy/mern-tutorial) .
+Special thanks to [bradtraversy] (https://github.com/bradtraversy) and contributors for their work.

@@ -9,6 +9,7 @@ import {
   updateGoal,
   deleteGoal,
 } from "../../controller/goals/goalController.js";
+import protect from "../../middleware/authMiddleware.js";
 
 goalRouter.route("/").get(protect, getGoals).post(protect, addGoal);
 goalRouter
