@@ -3,11 +3,11 @@ import GoalItem from "./GoalItem";
 function GoalsList({ goals, filter }) {
   const filteredGoals = goals.filter((goal) => {
     if (filter === "completed") {
-      return goal.isLoading === false;
+      return goal.isCompleted === true;
     }
 
     if (filter === "incomplete") {
-      return goal.isLoading === true;
+      return goal.isCompleted === false;
     }
 
     return true;
