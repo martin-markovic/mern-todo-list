@@ -1,10 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import GoalsForm from "../components/GoalsForm";
 import { getGoals, reset } from "../features/goals/goalSlice";
-import GoalItem from "../components/GoalItem";
+import GoalsList from "../components/GoalsList";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -14,6 +14,8 @@ function Dashboard() {
   const { goals, isLoading, isError, isEditing, errorMessage } = useSelector(
     (state) => state.goal
   );
+
+  const [filter, setFilter] = useState("all");
 
   useEffect(() => {
     if (isError) {
@@ -37,6 +39,10 @@ function Dashboard() {
     };
   }, [dispatch]);
 
+  const handleFilterChange = (filter) => {
+    setFilter(filter);
+  };
+
   return isLoading ? (
     <div>
       <p>Please wait, loading...</p>
@@ -51,17 +57,16 @@ function Dashboard() {
         <></>
       ) : (
         <>
-          <section>
-            {goals.length > 0 ? (
-              <div>
-                {goals.map((goal) => {
-                  return <GoalItem key={goal._id} goal={goal} />;
-                })}
-              </div>
-            ) : (
-              <h3>You have not set any goals yet</h3>
-            )}
-          </section>
+          <div>
+            <button onClick={() => handleFilterChange("all")}>All</button>
+            <button onClick={() => handleFilterChange("completed")}>
+              Completed
+            </button>
+            <button onClick={() => handleFilterChange("incomlete")}>
+              Incomplete
+            </button>
+          </div>
+          <GoalsList goals={goals} filter={filter} />
         </>
       )}
     </>
