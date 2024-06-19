@@ -50,7 +50,7 @@ const editGoal = async (id, token) => {
   }
 };
 
-const updateGoal = async (id, text, token) => {
+const updateGoal = async (id, goalData, token) => {
   try {
     const config = {
       headers: {
@@ -58,7 +58,7 @@ const updateGoal = async (id, text, token) => {
       },
     };
 
-    const response = await axios.put(`${API_URL}${id}`, text, config);
+    const response = await axios.put(`${API_URL}${id}`, goalData, config);
 
     return response.data;
   } catch (error) {

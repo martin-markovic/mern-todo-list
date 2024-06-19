@@ -4,14 +4,14 @@ import User from "../../models/userModel.js";
 // POST create a new goal
 export const addGoal = async (req, res) => {
   try {
-    if (!req.body.title || !req.body.text) {
+    if (!req.body.text) {
       return res.status(404).json({ message: "Please add all fields" });
     }
 
     const newGoal = await Goal.create({
-      title: req.body.title,
       text: req.body.text,
       user: req.user.id,
+      isCompleted: req.body.isCompleted,
     });
 
     return res.status(201).json(newGoal);
