@@ -14,8 +14,8 @@ function GoalItem({ goal }) {
   return (
     <div>
       <div>{new Date(goal.createdAt).toLocaleString("en-US")}</div>
-      <h1>{goal.title}</h1>
-      <h2>{goal.text}</h2>
+      <h3>{goal.text}</h3>
+      <h4>{goal.isCompleted && "Completed"}</h4>
       <button onClick={onDelete}>X</button>
       <button onClick={onEdit}>Edit</button>
     </div>

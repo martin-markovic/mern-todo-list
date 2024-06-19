@@ -11,6 +11,10 @@ const goalSchema = mongoose.Schema(
       type: String,
       required: [true, "Please add text"],
     },
+    isCompleted: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

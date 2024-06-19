@@ -6,84 +6,79 @@ import { toast } from "react-toastify";
 
 function GoalsForm() {
   const [formData, setFormData] = useState({
-    title: "",
     text: "",
+    isCompleted: false,
   });
 
   const dispatch = useDispatch();
   const { isEditing, formMessage } = useSelector((state) => state.goal);
 
-  const { title, text } = formData;
+  const { text, isCompleted } = formData;
 
   useEffect(() => {
-    if (isEditing && formMessage) {
-      setFormData((prevState) => ({
-        ...prevState,
-        text: formMessage.text || "",
-      }));
+    if (isEditing) {
+      setFormData({
+        text: formMessage.text,
+        isCompleted: formMessage.isCompleted,
+      });
     } else {
-      setFormData({ title: "", text: "" });
+      setFormData({
+        text: "",
+        isCompleted: false,
+      });
     }
   }, [isEditing, formMessage]);
 
   const onChange = (e) => {
-    e.preventDefault();
+    const { name, type, checked, value } = e.target;
 
     setFormData((prevState) => ({
       ...prevState,
-      [e.target.name]: e.target.value,
+      [name]: type === "checkbox" ? checked : value,
     }));
   };
 
   const onSubmit = (e) => {
     e.preventDefault();
 
-    if (isEditing ? !text : !title || !text) {
-      return toast.error("Please fill all fields");
+    if (!text) {
+      return toast.error("Please add text");
     } else {
-      const goalData = {
-        title,
-        text,
-      };
+      const goalData = { text, isCompleted };
 
       if (isEditing) {
-        dispatch(updateGoal({ id: formMessage._id, data: goalData }));
+        dispatch(updateGoal({ id: formMessage._id, goalData }));
+
+        console.log(`dispatching ${goalData.text} and ${goalData.isCompleted}`);
       } else {
         dispatch(createGoal(goalData));
       }
 
-      setFormData({ title: "", text: "" });
+      setFormData({ text: "", isCompleted: false });
     }
   };
 
   return (
-    <>
-      <form onSubmit={onSubmit}>
-        {isEditing ? (
-          <></>
-        ) : (
-          <input
-            type="text"
-            name="title"
-            id="title"
-            placeholder="Add title"
-            value={title}
-            onChange={onChange}
-          ></input>
-        )}
-
+    <form onSubmit={onSubmit}>
+      <input
+        type="text"
+        name="text"
+        id="text"
+        placeholder="Add text"
+        value={text}
+        onChange={onChange}
+      ></input>
+      {isEditing && (
         <input
-          type="text"
-          name="text"
-          id="text"
-          placeholder="Add text"
-          value={text}
+          type="checkbox"
+          name="isCompleted"
+          id="isCompleted"
+          checked={isCompleted}
           onChange={onChange}
         ></input>
-        <input type="submit" value={isEditing ? "Update" : "Submit"}></input>
-      </form>
-    </>
+      )}
+      <input type="submit" value={isEditing ? "Update" : "Submit"}></input>
+    </form>
   );
 }
-
 export default GoalsForm;

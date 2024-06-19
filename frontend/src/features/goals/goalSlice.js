@@ -7,7 +7,7 @@ const initialState = {
   isLoading: false,
   isSuccess: false,
   isEditing: false,
-  formMessage: "",
+  formMessage: { text: "", isCompleted: false },
   errorMessage: "",
 };
 
@@ -62,11 +62,11 @@ export const editGoal = createAsyncThunk("goals/edit", async (id, thunkAPI) => {
 
 export const updateGoal = createAsyncThunk(
   "goals/update",
-  async ({ id, data }, thunkAPI) => {
+  async ({ id, goalData }, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
 
-      return await goalService.updateGoal(id, data, token);
+      return await goalService.updateGoal(id, goalData, token);
     } catch (error) {
       const message =
         (error.response && error.response && error.response.data.message) ||
