@@ -1,10 +1,10 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import GoalsForm from "../components/GoalsForm";
 import { getGoals, reset } from "../features/goals/goalSlice";
-import GoalItem from "../components/GoalItem";
+import GoalsList from "../components/GoalsList";
 
 function Dashboard() {
   const navigate = useNavigate();
@@ -14,6 +14,8 @@ function Dashboard() {
   const { goals, isLoading, isError, isEditing, errorMessage } = useSelector(
     (state) => state.goal
   );
+
+  const [filter, setFilter] = useState("all");
 
   useEffect(() => {
     if (isError) {
@@ -37,32 +39,46 @@ function Dashboard() {
     };
   }, [dispatch]);
 
+  const handleFilterChange = (filter) => {
+    setFilter(filter);
+  };
+
   return isLoading ? (
     <div>
       <p>Please wait, loading...</p>
     </div>
   ) : (
     <>
-      <section>
+      <section className="dashboard-container">
         <h1>Welcome, {user && user.name}</h1>
       </section>
       <GoalsForm />
       {isEditing ? (
         <></>
       ) : (
-        <>
-          <section>
-            {goals.length > 0 ? (
-              <div>
-                {goals.map((goal) => {
-                  return <GoalItem key={goal._id} goal={goal} />;
-                })}
-              </div>
-            ) : (
-              <h3>You have not set any goals yet</h3>
-            )}
-          </section>
-        </>
+        <section className="goals-list-section">
+          <div>
+            <button
+              disabled={filter === "all" ? "disabled" : ""}
+              onClick={() => handleFilterChange("all")}
+            >
+              Show All
+            </button>
+            <button
+              disabled={filter === "completed" ? "disabled" : ""}
+              onClick={() => handleFilterChange("completed")}
+            >
+              Show Completed
+            </button>
+            <button
+              disabled={filter === "incomplete" ? "disabled" : ""}
+              onClick={() => handleFilterChange("incomplete")}
+            >
+              Show Incomplete
+            </button>
+          </div>
+          <GoalsList goals={goals} filter={filter} />
+        </section>
       )}
     </>
   );
