@@ -12,15 +12,25 @@ function GoalItem({ goal }) {
     dispatch(editGoal(goal._id));
   };
   return (
-    <div>
-      <span className={goal.isCompleted ? "goal-completed" : ""}>
-        {goal.text}
-      </span>
-      {goal.isCompleted && <span>"Completed"</span>}
-      <div>
-        <span>{new Date(goal.createdAt).toLocaleString("en-US")}</span>
+    <div className="goal-item">
+      <div className="goal-item__row">
+        <span
+          className={`goal-item__text ${goal.isCompleted ? "-completed" : ""}`}
+        >
+          {goal.text}
+        </span>
+        {goal.isCompleted && (
+          <span style={{ fontWeight: "bold" }}>Completed</span>
+        )}
+      </div>
+      <div className="goal-item__row">
         <span>
-          <button onClick={onDelete}>X</button>
+          Submitted: {new Date(goal.createdAt).toLocaleString("en-US")}
+        </span>
+        <span>
+          <button style={{ marginRight: "5px" }} onClick={onDelete}>
+            Delete
+          </button>
           <button onClick={onEdit}>Edit</button>
         </span>
       </div>

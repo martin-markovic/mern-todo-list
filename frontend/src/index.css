@@ -1,6 +1,5 @@
 body {
   margin: 0;
-  padding-top: 2em;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
@@ -14,7 +13,7 @@ body {
 }
 
 #root {
-  width: 15%;
+  width: 25%;
 }
 
 header {
@@ -48,16 +47,54 @@ ol {
   list-style-type: none;
 }
 
+.dashboard_goals {
+  width: 130%;
+}
+
+.dasboard_filters {
+  margin: 2em 0 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.dashboard_filters-button {
+  width: 20%;
+  padding: 3px 0;
+}
+
+.goal-item {
+  height: 75px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  border: 1px solid hsl(0, 0%, 76%);
+  margin: 10px 0;
+  padding: 7px 10px 0px;
+}
+
+.goal-item__row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.goal-item__text {
+  font-size: large;
+  font-weight: 200;
+}
+
+.goal-item__text.-completed {
+  text-decoration: line-through;
+  font-style: italic;
+}
+
 a:hover {
   color: red;
 }
 
 a:active {
   color: red;
-}
-
-.goal-completed {
-  text-decoration: line-through;
 }
 
 code {

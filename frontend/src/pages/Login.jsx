@@ -54,13 +54,15 @@ function Login() {
 
   return (
     <>
-      <h1>
-        <span>
-          <FaSignInAlt />
-        </span>
-        <span>Login</span>
-      </h1>
-      <h3>Please log in</h3>
+      <section>
+        <h1>
+          <span>
+            <FaSignInAlt />
+          </span>
+          <span>Login</span>
+        </h1>
+        <p>Please log in</p>
+      </section>
 
       <section>
         <form onSubmit={onSubmit}>
