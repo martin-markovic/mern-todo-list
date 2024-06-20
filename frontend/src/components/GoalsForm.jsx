@@ -69,16 +69,26 @@ function GoalsForm() {
         onChange={onChange}
       ></input>
       {isEditing && (
-        <span style={{ alignSelf: "center" }}>
+        <span
+          style={{
+            display: "inline-block",
+            marginTop: "10px",
+            alignSelf: "center",
+          }}
+        >
           Mark as completed{" "}
           <input
-            style={{ width: "15px", height: "15px", marginTop: "10px" }}
+            style={{
+              width: "17px",
+              height: "17px",
+              verticalAlign: "middle",
+            }}
             type="checkbox"
             name="isCompleted"
             id="isCompleted"
             checked={isCompleted}
             onChange={onChange}
-          ></input>
+          />
         </span>
       )}
       <input
