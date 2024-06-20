@@ -56,11 +56,14 @@ function Login() {
     <>
       <section>
         <h1>
-          <FaSignInAlt />
-          Login
+          <span>
+            <FaSignInAlt />
+          </span>
+          <span>Login</span>
         </h1>
         <p>Please log in</p>
       </section>
+
       <section>
         <form onSubmit={onSubmit}>
           <input
@@ -79,7 +82,12 @@ function Login() {
             placeholder="Enter your password"
             onChange={onChange}
           ></input>
-          <button type="submit">Submit</button>
+          <button
+            style={{ width: "30%", marginLeft: "30%", padding: "4px 0" }}
+            type="submit"
+          >
+            Submit
+          </button>
         </form>
       </section>
     </>

@@ -15,11 +15,11 @@ function GoalsList({ goals, filter }) {
   return (
     <section>
       {filteredGoals.length > 0 ? (
-        <div>
+        <>
           {filteredGoals.map((goal) => (
             <GoalItem key={goal._id} goal={goal} />
           ))}
-        </div>
+        </>
       ) : (
         <h3>No goals, please create a goal.</h3>
       )}

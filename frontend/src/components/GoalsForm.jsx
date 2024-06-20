@@ -69,15 +69,23 @@ function GoalsForm() {
         onChange={onChange}
       ></input>
       {isEditing && (
-        <input
-          type="checkbox"
-          name="isCompleted"
-          id="isCompleted"
-          checked={isCompleted}
-          onChange={onChange}
-        ></input>
+        <span style={{ alignSelf: "center" }}>
+          Mark as completed{" "}
+          <input
+            style={{ width: "15px", height: "15px", marginTop: "10px" }}
+            type="checkbox"
+            name="isCompleted"
+            id="isCompleted"
+            checked={isCompleted}
+            onChange={onChange}
+          ></input>
+        </span>
       )}
-      <input type="submit" value={isEditing ? "Update" : "Submit"}></input>
+      <input
+        style={{ width: "20%", marginLeft: "40%" }}
+        type="submit"
+        value={isEditing ? "Update" : "Submit"}
+      ></input>
     </form>
   );
 }

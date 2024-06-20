@@ -100,7 +100,11 @@ function Register() {
             placeholder="Confirm your password"
             onChange={onChange}
           ></input>
-          <input type="submit" value="Submit"></input>
+          <input
+            style={{ width: "30%", marginLeft: "30%" }}
+            type="submit"
+            value="Submit"
+          ></input>
         </form>
       </section>
     </>
