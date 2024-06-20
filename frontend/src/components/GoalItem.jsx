@@ -13,11 +13,17 @@ function GoalItem({ goal }) {
   };
   return (
     <div>
-      <div>{new Date(goal.createdAt).toLocaleString("en-US")}</div>
-      <h3>{goal.text}</h3>
-      <h4>{goal.isCompleted && "Completed"}</h4>
-      <button onClick={onDelete}>X</button>
-      <button onClick={onEdit}>Edit</button>
+      <span className={goal.isCompleted ? "goal-completed" : ""}>
+        {goal.text}
+      </span>
+      {goal.isCompleted && <span>"Completed"</span>}
+      <div>
+        <span>{new Date(goal.createdAt).toLocaleString("en-US")}</span>
+        <span>
+          <button onClick={onDelete}>X</button>
+          <button onClick={onEdit}>Edit</button>
+        </span>
+      </div>
     </div>
   );
 }

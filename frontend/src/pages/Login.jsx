@@ -54,13 +54,14 @@ function Login() {
 
   return (
     <>
-      <section>
-        <h1>
+      <h1>
+        <span>
           <FaSignInAlt />
-          Login
-        </h1>
-        <p>Please log in</p>
-      </section>
+        </span>
+        <span>Login</span>
+      </h1>
+      <h3>Please log in</h3>
+
       <section>
         <form onSubmit={onSubmit}>
           <input
@@ -79,7 +80,12 @@ function Login() {
             placeholder="Enter your password"
             onChange={onChange}
           ></input>
-          <button type="submit">Submit</button>
+          <button
+            style={{ width: "30%", marginLeft: "30%", padding: "4px 0" }}
+            type="submit"
+          >
+            Submit
+          </button>
         </form>
       </section>
     </>

@@ -77,7 +77,11 @@ function GoalsForm() {
           onChange={onChange}
         ></input>
       )}
-      <input type="submit" value={isEditing ? "Update" : "Submit"}></input>
+      <input
+        style={{ width: "30%", marginLeft: "30%" }}
+        type="submit"
+        value={isEditing ? "Update" : "Submit"}
+      ></input>
     </form>
   );
 }

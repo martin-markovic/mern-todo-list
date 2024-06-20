@@ -48,39 +48,43 @@ function Dashboard() {
       <p>Please wait, loading...</p>
     </div>
   ) : (
-    <>
-      <section className="dashboard-container">
-        <h1>Welcome, {user && user.name}</h1>
-      </section>
+    <section>
+      <>
+        <h1>
+          Welcome,
+          <br></br>
+          {user && user.name}
+        </h1>
+      </>
       <GoalsForm />
       {isEditing ? (
         <></>
       ) : (
-        <section className="goals-list-section">
+        <>
           <div>
             <button
               disabled={filter === "all" ? "disabled" : ""}
               onClick={() => handleFilterChange("all")}
             >
-              Show All
+              All
             </button>
             <button
               disabled={filter === "completed" ? "disabled" : ""}
               onClick={() => handleFilterChange("completed")}
             >
-              Show Completed
+              Completed
             </button>
             <button
               disabled={filter === "incomplete" ? "disabled" : ""}
               onClick={() => handleFilterChange("incomplete")}
             >
-              Show Incomplete
+              Incomplete
             </button>
           </div>
           <GoalsList goals={goals} filter={filter} />
-        </section>
+        </>
       )}
-    </>
+    </section>
   );
 }
 
