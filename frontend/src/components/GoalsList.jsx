@@ -1,9 +1,15 @@
 import GoalItem from "./GoalItem";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+import { FaArrowAltCircleLeft, FaArrowAltCircleRight } from "react-icons/fa";
 
 function GoalsList({ goals, filter }) {
   const [page, setPage] = useState(1);
   const goalsPerPage = 5;
+
+  useEffect(() => {
+    setPage(1);
+  }, [filter]);
 
   const filteredGoals = goals.filter((goal) => {
     if (filter === "completed") {
@@ -25,9 +31,9 @@ function GoalsList({ goals, filter }) {
   );
 
   const handlePage = (e) => {
-    if (e.target.name === "previous" && page > 1) {
+    if (e.currentTarget.name === "previous" && page > 1) {
       setPage(page - 1);
-    } else if (e.target.name === "next" && page < totalPages) {
+    } else if (e.currentTarget.name === "next" && page < totalPages) {
       setPage(page + 1);
     }
   };
@@ -41,18 +47,26 @@ function GoalsList({ goals, filter }) {
           ))}
         </>
       ) : (
-        <h3>No goals, please create a goal.</h3>
+        <h3 style={{ textAlign: "center" }}>No goals, please create a goal.</h3>
       )}
-      <div className="pagination">
+      <div className="goal-list__pagination">
         {page > 1 && (
-          <button name="previous" onClick={handlePage}>
-            Previous
+          <button
+            className="goal-list__pagination-button"
+            name="previous"
+            onClick={handlePage}
+          >
+            <FaArrowAltCircleLeft />
           </button>
         )}
-        <span>{page}</span>
+        <span style={{ fontSize: "large", margin: "0 1em" }}>{page}</span>
         {page < totalPages && (
-          <button name="next" onClick={handlePage}>
-            Next
+          <button
+            className="goal-list__pagination-button"
+            name="next"
+            onClick={handlePage}
+          >
+            <FaArrowAltCircleRight />
           </button>
         )}
       </div>

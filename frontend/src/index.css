@@ -89,6 +89,19 @@ ol {
   font-style: italic;
 }
 
+.goal-list__pagination {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.goal-list__pagination-button {
+  height: 27px;
+  width: 28px;
+  padding: 2px 0 0 1px;
+}
+
 a:hover {
   color: red;
 }
