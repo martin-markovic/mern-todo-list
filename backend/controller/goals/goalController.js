@@ -4,6 +4,10 @@ import User from "../../models/userModel.js";
 // POST create a new goal
 export const addGoal = async (req, res) => {
   try {
+    if (!req.user) {
+      return res.status(401).json({ message: "User not found" });
+    }
+    
     if (!req.body.text) {
       return res.status(404).json({ message: "Please add all fields" });
     }
@@ -23,6 +27,10 @@ export const addGoal = async (req, res) => {
 // GET all goals
 export const getGoals = async (req, res) => {
   try {
+    if (!req.user) {
+      return res.status(401).json({ message: "User not found" });
+    }
+    
     const userId = req.user._id;
     const goals = await Goal.find({ user: userId });
 
