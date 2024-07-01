@@ -1,27 +1,33 @@
 # MERN ToDo App
 A full-stack ToDo application built with the MERN stack (MongoDB, Express, React, Node.js).
+<br/>
 
- **Note:** This project is a boilerplate and will be subject to change according to implemented features.
+## Table of Contents
+- [Features](#features)
+- [Technical Stack](#technical-stack)
+- [Installation](#installation)
+- [Credits](#credits)
+- [License](#license)
+- [Contact](#contact)
 
 ## Features
 - User authentication (signup, login, logout)
 - Create, read, update, and delete tasks
 - Mark tasks as completed
 - Filter tasks by status (all, completed, incomplete)
-- Responsive design
   
-## Tech Stack
-- Frontend: React, Redux, React Router
-- Backend: Node.js, Express
-- Database: MongoDB, Mongoose
-- Authentication: JWT (JSON Web Tokens)
-
-## Getting Started
-Prerequisites
-- Node.js and npm installed on your machine
-- MongoDB installed and running locally or a MongoDB Atlas account
+## Technical Stack
+- **Frontend**: React, Redux, React Router
+- **Backend**: Node.js, Express
+- **Database**: MongoDB, Mongoose
+- **Authentication**: JWT (JSON Web Tokens)
 
 ## Installation
+
+**Prerequisites**
+- Node.js and npm installed on your machine
+- MongoDB installed and running locally or a MongoDB Atlas account
+<br/>
 
 1. Clone the repository:
 
@@ -48,9 +54,21 @@ Prerequisites
     npm run dev
     ```
 
-5. Navigate to:  http://localhost:3001 
+5. Start the client server:
+
+    ```sh
+    npm run client
+    ```    
+
+6. Navigate to:  http://localhost:3000
 
 ## Credits
 
 This project is based on [Goalsetter MERN app] (https://github.com/bradtraversy/mern-tutorial) .
 Special thanks to [bradtraversy] (https://github.com/bradtraversy) and contributors for their work.
+
+## License
+This project is licensed under the MIT License. See the LICENSE file for details.
+
+## Contact
+For any questions or feedback, please reach out via martin730036@gmail.com.
