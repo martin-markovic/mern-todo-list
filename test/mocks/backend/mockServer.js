@@ -1,13 +1,12 @@
 import express from "express";
+import mockRouter from "./routes/mockRouter.js";
 
 const mockApp = () => {
   const app = express();
 
   app.use(express.json());
 
-  app.get("/", (req, res) => {
-    res.status(200).json({ message: "Hello Test" });
-  });
+  app.use("/", mockRouter);
 
   return app;
 };
