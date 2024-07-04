@@ -1,18 +1,23 @@
 import { Router } from "express";
+import { mockProtect } from "../../middleware/mockAuthMiddleware.js";
+
 const mockUserRoutes = Router();
 
-mockUserRoutes.post("/", (req, res) => {
+mockUserRoutes.post("/", mockProtect, (req, res) => {
   res.status(201).json({
-    // implement sending id and token
-    name: req.body.name,
-    email: req.body.email,
+    id: req.user.id,
+    name: req.user.name,
+    email: req.user.email,
+    token: req.user.token,
   });
 });
 
-mockUserRoutes.post("/login", (req, res) => {
+mockUserRoutes.post("/login", mockProtect, (req, res) => {
   res.status(200).json({
-    email: req.body.email,
-    // implement sending token
+    id: req.user.id,
+    name: req.user.name,
+    email: req.user.email,
+    token: req.user.token,
   });
 });
 

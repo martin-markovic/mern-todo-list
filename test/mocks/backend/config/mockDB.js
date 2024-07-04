@@ -1,8 +1,38 @@
 class MockDB {
   constructor() {
     this.storage = {
-      users: [],
-      goals: [],
+      users: [
+        {
+          id: 1,
+          name: "John Doe",
+          email: "johndoe@gmail.com",
+          password: "password123",
+          password2: "password123",
+          token: "qwertyasdfgzxc1",
+        },
+        {
+          id: 2,
+          name: "Jane Doe",
+          email: "janedoe@gmail.com",
+          password: "password123",
+          password2: "password123",
+          token: null,
+        },
+      ],
+      goals: [
+        {
+          id: 1,
+          user: 1,
+          text: "John Goal 1",
+          isCompleted: false,
+        },
+        {
+          id: 2,
+          user: 2,
+          text: "Jane Goal 1",
+          isCompleted: false,
+        },
+      ],
     };
   }
 
