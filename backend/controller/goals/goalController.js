@@ -1,13 +1,12 @@
 import Goal from "../../models/goalModel.js";
 import User from "../../models/userModel.js";
 
-// POST create a new goal
 export const addGoal = async (req, res) => {
   try {
     if (!req.user) {
       return res.status(401).json({ message: "User not found" });
     }
-    
+
     if (!req.body.text) {
       return res.status(404).json({ message: "Please add all fields" });
     }
@@ -23,14 +22,12 @@ export const addGoal = async (req, res) => {
     return res.status(500).json({ message: error.message });
   }
 };
-
-// GET all goals
 export const getGoals = async (req, res) => {
   try {
     if (!req.user) {
       return res.status(401).json({ message: "User not found" });
     }
-    
+
     const userId = req.user._id;
     const goals = await Goal.find({ user: userId });
 
@@ -40,7 +37,6 @@ export const getGoals = async (req, res) => {
   }
 };
 
-// GET goal by id
 export const getGoalById = async (req, res) => {
   try {
     const goal = await Goal.findById(req.params.id);
@@ -65,7 +61,6 @@ export const getGoalById = async (req, res) => {
   }
 };
 
-// PUT update a goal by id
 export const updateGoal = async (req, res) => {
   try {
     const goalToUpdate = await Goal.findById(req.params.id);
@@ -94,7 +89,6 @@ export const updateGoal = async (req, res) => {
   }
 };
 
-// DELETE goal by id
 export const deleteGoal = async (req, res) => {
   try {
     const goalToDelete = await Goal.findById(req.params.id);

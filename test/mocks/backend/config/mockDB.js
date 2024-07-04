@@ -21,11 +21,13 @@ class MockDB {
       ],
       goals: [
         {
+          id: 1,
           user: 1,
           text: "John Goal 1",
           isCompleted: false,
         },
         {
+          id: 2,
           user: 2,
           text: "Jane Goal 1",
           isCompleted: false,
