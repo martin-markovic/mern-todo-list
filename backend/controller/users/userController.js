@@ -64,7 +64,3 @@ const generateToken = (id) => {
     }
   );
 };
-
-export const getUser = async (req, res) => {
-  return res.json({ message: "Get User Data" });
-};

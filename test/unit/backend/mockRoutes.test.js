@@ -7,7 +7,13 @@ import mockGoalRoutes from "../../mocks/backend/routes/goals/mockGoalRoutes.js";
 
 describe("Route API", () => {
   let app;
-  let newUser = mockDB.storage.users[0];
+  let nonExistingUser = {
+    name: "Tim White",
+    email: "timwhite@gmail.com",
+    password: "password123",
+    password2: "password123",
+  };
+  let existingUser = mockDB.storage.users[0];
   let unauthorizedUser = mockDB.storage.users[1];
   let newGoal = mockDB.storage.goals[0];
   let updatedGoal = {
@@ -28,40 +34,69 @@ describe("Route API", () => {
   });
 
   describe("User Routes", () => {
-    it("should return status 201 and user credentials", async () => {
-      const res = await request(app)
-        .post("/api/users/")
-        .send({
-          name: newUser.name,
-          email: newUser.email,
-          password: newUser.password,
-          password2: newUser.password2,
-        })
-        .set("Authorization", `Bearer ${mockToken}`);
+    describe("registerUser", () => {
+      it("should return status 201 and user credentials", async () => {
+        const res = await request(app)
+          .post("/api/users/")
+          .send(nonExistingUser);
 
-      expect(res.status).to.equal(201);
-      expect(res.body).to.have.property("id", newUser.id);
-      expect(res.body).to.have.property("name", newUser.name);
-      expect(res.body).to.have.property("email", newUser.email);
-      expect(res.body).to.have.property("token", newUser.token);
+        expect(res.status).to.equal(201);
+
+        expect(res.body).to.have.property("name", nonExistingUser.name);
+        expect(res.body).to.have.property("email", nonExistingUser.email);
+      });
+
+      it("should return a 400 status and a message", async () => {
+        const res = await request(app).post("/api/users/").send({
+          name: nonExistingUser.name,
+          email: nonExistingUser.email,
+          password: null,
+        });
+
+        expect(res.status).to.equal(400);
+        expect(res.body).to.have.property("message", "Please add all fields");
+      });
+
+      it("should return a 400 status and a message", async () => {
+        const res = await request(app).post("/api/users/").send(existingUser);
+
+        expect(res.status).to.equal(400);
+        expect(res.body).to.have.property("message", "User already exists");
+      });
     });
 
-    it("should return status 200 and user credentials", async () => {
-      const res = await request(app)
-        .post("/api/users/login")
-        .send({ email: newUser.email, password: newUser.password })
-        .set("Authorization", `Bearer ${mockToken}`);
+    describe("loginUser", () => {
+      it("should return status 200 and user credentials", async () => {
+        const res = await request(app)
+          .post("/api/users/login")
+          .send({ email: existingUser.email, password: existingUser.password })
+          .set("Authorization", `Bearer ${mockToken}`);
 
-      expect(res.status).to.equal(200);
-      expect(res.body).to.have.property("id", newUser.id);
-      expect(res.body).to.have.property("name", newUser.name);
-      expect(res.body).to.have.property("email", newUser.email);
-      expect(res.body).to.have.property("token", newUser.token);
+        expect(res.status).to.equal(200);
+        expect(res.body).to.have.property("id", existingUser.id);
+        expect(res.body).to.have.property("name", existingUser.name);
+        expect(res.body).to.have.property("email", existingUser.email);
+        expect(res.body).to.have.property("token", existingUser.token);
+      });
+
+      it("should return a 401 status and a message invalid credentials", async () => {
+        const res = await request(app).post("/api/users/login").send({
+          name: existingUser.name,
+          email: existingUser.email,
+          password: "nonexistingpassword",
+        });
+
+        expect(res.status).to.equal(401);
+        expect(res.body).to.have.property(
+          "message",
+          "Invalid user credentials"
+        );
+      });
     });
   });
 
   describe("Goal Routes", () => {
-    describe("addGoal", () => {
+    describe("mockAddGoal", () => {
       it("should create a goal verify it", async () => {
         const res = await request(app)
           .post(`/api/goals/`)
@@ -75,18 +110,18 @@ describe("Route API", () => {
       });
 
       // send request with an empty text field
-      // it("should respond with 401 status and message", async () => {
-      //   const res = await request(app)
-      //     .post(`/api/goals/`)
-      //     .send({
-      //       text: null,
-      //       isCompleted: true,
-      //     })
-      //     .set("Authorization", `Bearer ${mockToken}`);
+      it("should respond with 400 status and message", async () => {
+        const res = await request(app)
+          .post(`/api/goals/`)
+          .send({
+            text: null,
+            isCompleted: true,
+          })
+          .set("Authorization", `Bearer ${mockToken}`);
 
-      //   expect(res.status).to.equal(401);
-      //   expect(res.body).to.have.property("message", "Please add all fields");
-      // });
+        expect(res.status).to.equal(400);
+        expect(res.body).to.have.property("message", "Please add all fields");
+      });
 
       // send request without token
       it("should respond with 401 status and message", async () => {
@@ -103,7 +138,7 @@ describe("Route API", () => {
       });
     });
 
-    describe("getGoals", () => {
+    describe("mockGetGoals", () => {
       it("should get goals and verify them", async () => {
         const res = await request(app)
           .get("/api/goals/")
@@ -128,7 +163,7 @@ describe("Route API", () => {
       });
     });
 
-    describe("getGoalById", () => {
+    describe("mockGetGoalById", () => {
       it("should get a goal by ID and verify it", async () => {
         const res = await request(app)
           .get(`/api/goals/${newGoal.id}`)
@@ -175,7 +210,7 @@ describe("Route API", () => {
       });
     });
 
-    describe("updateGoal", () => {
+    describe("mockUpdateGoal", () => {
       it("should update a goal by ID and verify it", async () => {
         const res = await request(app)
           .put(`/api/goals/${newGoal.id}`)
@@ -239,7 +274,7 @@ describe("Route API", () => {
       });
     });
 
-    describe("deleteGoal", () => {
+    describe("mockDeleteGoal", () => {
       it("should delete a goal by ID and verify it", async () => {
         const res = await request(app)
           .delete(`/api/goals/${newGoal.id}`)
