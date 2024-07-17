@@ -16,7 +16,7 @@ const register = async (userData) => {
   }
 };
 
-const login = (userData) => {
+const login = async (userData) => {
   try {
     const response = await axios.post(API_URL + "login", userData);
 
@@ -30,7 +30,7 @@ const login = (userData) => {
   }
 };
 
-const logout = async () => {
+const logout = () => {
   localStorage.removeItem("user");
 };
 
