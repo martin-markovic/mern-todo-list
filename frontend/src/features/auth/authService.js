@@ -16,7 +16,7 @@ const register = async (userData) => {
   }
 };
 
-const login = async (userData) => {
+const login = (userData) => {
   try {
     const response = await axios.post(API_URL + "login", userData);
 
